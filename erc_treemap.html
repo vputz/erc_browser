@@ -180,25 +180,9 @@ Acronym
 
 <tr>
 <td class="projectDetailsHeaders">
-PI
+Participants
 </td>
-<td id="projectDetailsPI" class="projectDetailsData">
-</td>
-</tr>
-
-<tr>
-<td class="projectDetailsHeaders">
-HI
-</td>
-<td id="projectDetailsHI" class="projectDetailsData">
-</td>
-</tr>
-
-<tr>
-<td class="projectDetailsHeaders">
-HI Website
-</td>
-<td id="projectDetailsHIWebsite" class="projectDetailsData">
+<td id="projectDetailsParticipants" class="projectDetailsData">
 </td>
 </tr>
 
@@ -334,7 +318,7 @@ var makeSubstringFilter = function( name, values, attr ) {
     return filter;
 };
 
-d3.json( "with_summary.json", function (d) { 
+d3.json( "projects.json", function (d) { 
     arr = d; 
     collection = new PourOver.Collection( arr );
     years = _.sortBy(_.uniq(_.pluck( arr, "call_year" )));
@@ -551,7 +535,7 @@ function tree1_from_array( a, keys ) {
 	    "call_details": i.call_details,
 	    "hi_website" : i.hi_website,
 	    "erc_funding" : i.erc_funding,
-	    "duration" : i.duration,
+	    "duration" : i.startDate + "-" + i.endDate,
 	    "category" : i.category,
 	    "summary" : i.summary
 	});
@@ -841,9 +825,7 @@ function setData( data ) {
 
 		$("#projectDetailsProject").text(d2.project);
 		$("#projectDetailsAcronym").text(d2.acronym);
-		$("#projectDetailsPI").text(d2.pi);
-		$("#projectDetailsHI").text(d2.hi);
-		$("#projectDetailsHIWebsite").html("<a target='"+d2.hi_website+"'>"+d2.hi_website+"</a>");
+		$("#projectDetailsParticipants").text(d2.print_participants);
 		$("#projectDetailsCallDetails").text(d2.call_details);
 		$("#projectDetailsCountry").text(d2.country);
 		$("#projectDetailsFunding").text(formatMoney(d2.erc_funding));

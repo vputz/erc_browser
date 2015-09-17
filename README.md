@@ -35,10 +35,46 @@ data from a website represents a fair load on its server and can only
 justify it by saying that if we take a snapshot once, we can do a
 great deal of analysis without bothering the server again.
 
+New: The data comes from the cordis platform (http://cordis.europa.eu/projects/home_en.html)
+and datafiles can be downloaded directly from the EU Open Data Portal
+(http://open-data.europa.eu).  The relevant searches come from
+searching for "EU Research Projects under FP7" and "EU Research Projects
+under Horizon 2020".  Each has a csv file for projects and organizations.
+
+This presents some difficulties, as the two sets of data do not have
+the same distinctions; for example, the role of "hostInstitution" in FP7
+seems comparable to "Coordinator" in H2020.  Likewise FP7 seemed to track
+call domain (found in the "topics" line, as ERC-AG-LS6 would indicate
+an advanced grant in "immunity and infection"), but H2020 does not
+include this information; additionally many items such as "participantCountries"
+and "subjects" are not guaranteed to be populated.
+
 The data is dumped in a simple JSON format representing an array of
 items; each item is a dictionary with the various fields of the site
 (project name, project acronym, funding, etc).  A CSV file would have
 done just as well.
+
+The JSON format is
+
+	[ ...projects... ] where each project is
+
+	{
+	  "project" : project name
+	  "acronym" : short project acronym
+	  "pi" : primary investigator
+	  "hi" : host institute
+	  "country" : Name of country according to files
+	  "call_details" : call details
+	  "call_year" : year of grant
+	  "call_domain" : SH2
+	  "summary" : textual summary of the grant
+	  "hi_website" : website of the host institution
+	  "erc_funding" : number (in euros)--not string
+	  "duration" : duration (string, as "60 months")
+	  "category" : Category of grant ("starting grant" etc)
+	}
+
+
 
 ## Part 2: Rendering the Data
 
