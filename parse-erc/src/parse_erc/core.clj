@@ -125,11 +125,23 @@
                                        (assoc % :participants participants))) erc-projects)] ;(:participants(first %) :participants (second %)) (map vector proj-rows org-rows))]
               (doall projects))))))))
 
-(let [fp7-entries (erc-entries "cordis-fp7projects.csv" "cordis-fp7organizations.csv") 
-      h2020-entries (erc-entries "cordis-h2020projects.csv" "cordis-h2020organizations.csv")]
-  (do
-    (with-open [out-file (io/writer "projects.json")]
-      (json/write (map browser-entry (concat fp7-entries h2020-entries)) out-file))))
+
+(defn abstract-corpus [proj-reader]
+  (let [proj-rows (as-rows proj-reader)]
+    (filter (complement clojure.string/blank?)
+            (map #(clojure.string/replace (:objective %) (str \newline) " ") proj-rows))))
+
+(defn write-corpus [proj-filename out-filename]
+  (with-open [in-file (io/reader proj-filename)
+              out-file (io/writer out-filename)]
+    (.write out-file (apply str (interpose (str \newline) (abstract-corpus in-file))))))
+
+(defn make-projects-json []
+  (let [fp7-entries (erc-entries "cordis-fp7projects.csv" "cordis-fp7organizations.csv") 
+        h2020-entries (erc-entries "cordis-h2020projects.csv" "cordis-h2020organizations.csv")]
+    (do
+      (with-open [out-file (io/writer "projects.json")]
+        (json/write (map browser-entry (concat fp7-entries h2020-entries)) out-file)))))
 
 
      
